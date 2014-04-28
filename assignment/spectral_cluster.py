@@ -1,4 +1,5 @@
-
+#coding=utf-8
+#MSC means Multiple Spectral Clustering 
 import numpy as np
 import scipy as sp
 import scipy.linalg as linalg

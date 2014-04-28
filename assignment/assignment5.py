@@ -73,4 +73,7 @@ print clusterB[::]
 print std_clusterA[::]
 print std_clusterB[::]
 
+def getAdjMatrix(Matrix):
+	
+
 f_measure(clusterA,clusterB)
