@@ -28,9 +28,10 @@ def checkResult(Lbar,eigvec,eigval,k):
 	print("Lbar*v-lamda*v are %s*%s" % (length,np.spacing(1)))
 
 g=nx.read_gml("karate.gml")
-nodeNum=len(g.nodes())
-m=nx.to_numpy_matrix(g)
-Lbar=getNormLaplacian(m)
+nodeNum=len(g.nodes()=nx.to_numpy_matrix(g)
+		L))
+m
+mbar=getNormLaplacian(m)
 k=2
 kEigVal,kEigVec=getKSmallestEigVec(Lbar,k)
 #print("k eig val are %s" % kEigVal)

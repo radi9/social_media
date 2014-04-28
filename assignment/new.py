@@ -5,8 +5,9 @@ import scipy.linalg as linalg
 import networkx as nx
 import matplotlib.pyplot as plt
 
-std_clusterA=[1,2,3,4,5,6,7,8,11,12,13,14,17,18,20,22]
-std_clusterB=[9,10,15,16,19,21,23,24,25,26,27,28,29,30,31,32,33,34]
+std_clusterA
+std_clusterB
+
 
 def comb(x,y):
 	temp=1
@@ -22,7 +23,7 @@ def comb(x,y):
 		tempIII*=i
 	tempIII*=(x-y)
 	return temp/(tempII*tempIII)
-	
+
 def f_measure(clusterA,clusterB):
 	clusterA_diff = getDifference(clusterA,std_clusterA)
 	clusterB_diff = getDifference(clusterB,std_clusterB)
@@ -51,26 +52,26 @@ def getSame(arr_A,arr_B):
 		if element in arr_B:
 			temp.append(element)
 	return temp
-	
 
-karate_graph = nx.read_gml("karate.gml")
+def getAdjMatrix(m):
+	d=[np.sum(row) for row in m]
+	D=np.diag(d)
+	L=D-w
+	return L
 
-karate_adjance=nx.to_numpy_matrix(karate_graph)
+graph = nx.read_gml("karate.gml")
 
-k = kmeans(karate_adjance,2)
+k_matrix=nx.to_numpy_matrix(karate_graph)
 
-clusterA=[i for i in range(0,len(k[0][0])) if k[0][0][i]>k[0][1][i]]
+adj_matrix = getAdjMatrix(k_matrix))
+u,s,v = np.linalg.svd(adj_matrix)
 
-clusterB=[i for i in range(0,len(k[0][1])) if k[0][1][i]>k[0][0][i]]
+# generating a diagonal matrix with diag_deg
+diag_deg, _ = np.histogram(k_matrix.nonzero()[0], np.arange(k_matrix.shape[0]+1))
+dim = k_matrix.shape[0]
+diag_mat = np.zeros((dim**2, ))
+diag_mat[np.arange(0, dim**2, dim+1)] = diag_deg
+diag_mat.reshape((dim, dim))
 
 
-clusterA.sort()
-clusterB.sort()
 
-print clusterA[::]
-print clusterB[::]
-
-print std_clusterA[::]
-print std_clusterB[::]
-
-f_measure(clusterA,clusterB)
