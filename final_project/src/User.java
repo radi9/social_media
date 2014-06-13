@@ -11,6 +11,29 @@ import java.util.regex.Pattern;
  * each user node got the flowing 11 attributes:
  * 
  */
+enum Snapshot
+{
+	ONE, TWO, THREE, FOUR, FIVE, SIX, SEVER, EIGHT;
+	
+	private ArrayList<LinkedList<Mail> > users;//users records, two dimimetion
+	
+	Snapshot()
+	{
+		
+	}
+	
+	public LinkedList<Mail> returnMails
+	{
+		
+	}
+	
+	public LinkedList<Users> returnUsers
+	{
+		
+	}
+	
+}
+
 public class User {
 	
 	public int id;
@@ -30,6 +53,8 @@ public class User {
 	public double betCen;
 	public double connScore;//hubs and authorities, depend indegree and outdegree
 	public int numMail = mailList.size();
+	
+	private Snapshot status;
 	
 	private String rootPath;
 	
@@ -147,6 +172,12 @@ public class User {
 	public void topology()
 	{
 		//bfs here
+	}
+	
+	public void shapshot()
+	{
+		//eight shapshot, 2008~2011, head half year,back-ahead half year
+		
 	}
 	
 }
