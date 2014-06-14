@@ -1,6 +1,6 @@
 public class Mail {
 	
-	int id;
+	String id;
 	int sent_id;
 	int reciv_id;
 	int sent_time;
@@ -8,7 +8,7 @@ public class Mail {
 	
 	String content;
 	
-	public Mail(int id, int sent_id, int reciv_id, int sent_time, int reciv_time)
+	public Mail(String id, int sent_id, int reciv_id, int sent_time, int reciv_time)
 	{
 		this.id = id;
 		this.sent_id = sent_id;

@@ -13,28 +13,44 @@ import java.util.regex.Pattern;
  */
 enum Snapshot
 {
-	ONE, TWO, THREE, FOUR, FIVE, SIX, SEVER, EIGHT;
+	ONE(1999, "Jan", "Jun"), TWO(1999, "Jul", "Dec"), THREE(2000, "Jan", "Jun"), FOUR(2000, "Jul", "Dec"),
+	FIVE(2001, "Jan", "Jun"), SIX(2002, "Jul", "Dec"), SEVER(2011, "Jan", "Jun"), EIGHT(2011, "Jul", "Dec");
+	//not design six or eight snapshots
 	
-	private ArrayList<LinkedList<Mail> > users;//users records, two dimimetion
+	public int boud_year;
+	public String low_bound;
+	public String up_bound;
 	
-	Snapshot()
+	private LinkedList<Mail> mails;//users records, two dimimetion
+	private LinkedList<User> users;
+	
+	Snapshot(int bound_year, String low_bound, String up_bound)
 	{
-		
+		this.boud_year = bound_year;
+		this.low_bound = low_bound;
+		this.up_bound = up_bound;
 	}
 	
-	public LinkedList<Mail> returnMails
+	public void upgrade(User user, Mail mail)
 	{
-		
+		mails.add(mail);
 	}
 	
-	public LinkedList<Users> returnUsers
+	public void upgrade(User user)
 	{
-		
+		users.add(user);
 	}
+	
+	public void upgrade(Mail mail)
+	{
+		mails.add(mail);
+	}
+	
 	
 }
 
-public class User {
+public class User implements Comparable
+{
 	
 	public int id;
 	public LinkedList<Mail> inMail;//in degree
@@ -58,19 +74,33 @@ public class User {
 	
 	private String rootPath;
 	
-	public User(String folderName, LinkedList<User> connect)
+	public User(String userPath, LinkedList<User> connect, Snapshot status)
 	{
 		//not finished yet, the three case need to consider:
 		//"From, To" and "From" and "To"
 		
 		//initialize, get the sent box and in box mail
 		//consider the sent item ??
+		
+		//take care fo inmail and outmail, outmail : sent_mail and sent_item, inmail : in box and ...???
+		
+		
+		//set snapshot status;
+		this.status = status;
+		
+		//load data, rootDir is user folder
+		FileProcess file_process = new FileProcess(userPath);
+		String[] uesr_folders = file_process.getRootDir();//user content folders
+		
+		LinkedList<Mail> mails;
+		
 		try
 		{
 			BufferedReader br = new BufferedReader(new FileReader(folderName));
 			
 			ArrayList<String> mailInfo = new ArrayList<String>();
 			Mail mail;
+			User user;
 			
 			//only store the first 4 line
 			//4 line may error, because three cases need to be consider
@@ -95,74 +125,14 @@ public class User {
 		
 		adjMatrix = new LinkedList<User>();
 		this.adjMatrix = connect;
-	}
-	
-	private ArrayList getMessID(String rawData)
-	{
-		return str_split(rawData, "mess");
-	}
-	
-	private ArrayList getDate(String rawData)
-	{
-		return str_split(rawData, "date");
-	}
-	
-	private ArrayList getSentID(String rawData)
-	{
-		return str_split(rawData, "sent");
-	}
-	
-	private ArrayList getRecvID(String rawData)
-	{
-		return str_split(rawData, "recive");
-	}
-	
-	private ArrayList<String> str_split(String rawData, String type)
-	{
-		StringTokenizer st = null;
-		String patternStr = null;
-		String infor = null;
-		ArrayList<String> content = new ArrayList<String>();
-		switch(type){
-			case "mess":
-				patternStr = ":| |<|>";
-				st = new StringTokenizer(rawData, patternStr);
-				infor = "Message";
-				break;
-			case "date":
-				st = new StringTokenizer(rawData, " |,");
-				infor = "Date";
-				break;
-			case "sent":
-				st = new StringTokenizer(rawData, ":| ｜,");
-				infor = "From";
-				break;
-			case "recive":
-				st = new StringTokenizer(rawData, ":| ");
-				infor = "To";
-				break;
-			default:
-				System.err.println("no pattern found");
-				break;
-		}
 		
-		//just use the head to distinguish that the type name and content
-		Pattern pattern = Pattern.compile(infor);
-		Matcher matcher;
-		boolean matchFound;
-		
-		while(st.hasMoreTokens())
-		{
-			String temp = st.nextToken();
-			matcher = pattern.matcher(temp);
-			matchFound = matcher.find();
-			if( !(matchFound) )
-			{
-				content.add(temp);
-			}
-		}
-		return content;
 	}
+//	private String[] getDirct()
+//	{
+//		
+//	}
+	
+
 	
 	public void updateAdj(User a)
 	{
@@ -178,6 +148,14 @@ public class User {
 	{
 		//eight shapshot, 2008~2011, head half year,back-ahead half year
 		
+	}
+
+	@Override
+	public int compareTo(Object o) 
+	{
+		// TODO Auto-generated method stub
+		User other = (User) o;
+		return other.id - this.id;
 	}
 	
 }
